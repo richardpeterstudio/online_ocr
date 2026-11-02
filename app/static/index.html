@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>線上文字辨識 OCR</title>
+<meta name="description" content="上傳圖片或 PDF，免費辨識中文、英文文字。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230f766e'/%3E%3Cpath d='M9 11V8h3M23 8h3v3M26 21v3h-3M12 24H9v-3' stroke='white' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M12 13h8M12 16h8M12 19h5' stroke='white' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-inner">
+    <a class="brand" href="/">
+      <span class="logo" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M4 8V5h3M17 5h3v3M20 16v3h-3M7 19H4v-3"/><path d="M8 10h8M8 13h8M8 16h5"/></svg></span>
+      <span>文字辨識 OCR</span>
+    </a>
+    <button class="btn ghost small" id="newBtn" type="button" hidden>辨識新檔案</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <!-- 上傳 -->
+  <section id="uploadView">
+    <div class="intro">
+      <h1>把圖片裡的文字變成可以複製的文字</h1>
+      <p>支援中文、英文與數字。照片、截圖、掃描檔、PDF 都可以。</p>
+    </div>
+
+    <label class="drop" id="drop" tabindex="0">
+      <input type="file" id="file" accept="image/png,image/jpeg,image/webp,image/bmp,image/tiff,image/gif,application/pdf,.pdf" hidden>
+      <span class="drop-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V4"/><path d="m7 9 5-5 5 5"/><path d="M4 15v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+      <span class="drop-title">點這裡選擇檔案，或把檔案拖進來</span>
+      <span class="drop-sub">也可以直接按 <kbd>Ctrl</kbd> / <kbd>⌘</kbd> + <kbd>V</kbd> 貼上截圖</span>
+      <span class="drop-limits" id="limits">PNG、JPG、WebP、BMP、TIFF、PDF</span>
+    </label>
+
+    <ul class="features">
+      <li><b>不會保存檔案</b>辨識完成後檔案立即丟棄</li>
+      <li><b>標示文字位置</b>點選框線就能找到對應文字</li>
+      <li><b>可以直接修改</b>辨識結果可編輯、複製、下載</li>
+    </ul>
+  </section>
+
+  <!-- 辨識中 -->
+  <section id="busyView" class="busy" hidden>
+    <div class="spinner" aria-hidden="true"></div>
+    <p class="busy-title">正在辨識文字⋯</p>
+    <p class="busy-sub" id="busyName"></p>
+  </section>
+
+  <!-- 結果 -->
+  <section id="resultView" class="result" hidden>
+    <div class="pane preview-pane">
+      <div class="pane-head">
+        <span class="pane-title" id="fileName"></span>
+        <label class="switch"><input type="checkbox" id="showBoxes" checked> 顯示框線</label>
+      </div>
+      <div class="pages" id="pages"></div>
+    </div>
+
+    <div class="pane text-pane">
+      <div class="pane-head">
+        <span class="pane-title">辨識結果</span>
+        <span class="stats" id="stats"></span>
+      </div>
+      <textarea id="text" spellcheck="false" aria-label="辨識出的文字，可以直接修改"></textarea>
+      <div class="actions">
+        <button class="btn" id="copyBtn" type="button">複製文字</button>
+        <button class="btn ghost" id="dlBtn" type="button">下載 .txt</button>
+      </div>
+      <p class="hint">框線顏色：<span class="key ok"></span>清楚 <span class="key low"></span>不確定，建議再檢查</p>
+    </div>
+  </section>
+
+  <div class="alert" id="error" role="alert" hidden></div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/static/app.js"></script>
+</body>
+</html>
